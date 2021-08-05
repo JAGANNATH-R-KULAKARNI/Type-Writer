@@ -75,38 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const tiers = [
-  {
-    title: 'Handwritten text',
-    subheader: '',
-    price: '0',
-    description: [
-      'It converts typed text into handwritten text',
-    ],
-    buttonText: 'Get started',
-    buttonVariant: 'contained',
-  },
-  {
-    title: 'Text Extraction',
-    subheader: '',
-    price: '0',
-    description: [
-      'You need to upload an image and it will extract the text from it',
-    ],
-    buttonText: 'Get started',
-    buttonVariant: 'contained',
-  },
-  {
-    title: 'Voice Typer',
-    subheader: '',
-    price: '0',
-    description: [
-      'speak and it will convert it into text',
-    ],
-    buttonText: 'Get started',
-    buttonVariant: 'contained',
-  },
-];
+
 const LINKEDIN=
 <div>
 <Link target="_blank" href="https://www.linkedin.com/in/jagannath-r-kulakarni-a465841a7/" variant="subtitle1" color="textSecondary">
@@ -128,8 +97,44 @@ const footers = [
   
 ];
 
-export default function Pricing() {
+export default function Pricing(props) {
   const classes = useStyles();
+
+  const tiers = [
+    {
+      title: 'Handwritten text',
+      subheader: '',
+      price: '0',
+      description: [
+        'It converts typed text into handwritten text',
+      ],
+      buttonText: 'Get started',
+      buttonVariant: 'contained',
+      func : props.typeToHandwrittenStatusHandler
+    },
+    {
+      title: 'Text Extraction',
+      subheader: '',
+      price: '0',
+      description: [
+        'You need to upload an image and it will extract the text from it',
+      ],
+      buttonText: 'Get started',
+      buttonVariant: 'contained',
+      func : props.typeToHandwrittenStatusHandler
+    },
+    {
+      title: 'Voice Typer',
+      subheader: '',
+      price: '0',
+      description: [
+        'speak and it will convert it into text',
+      ],
+      buttonText: 'Get started',
+      buttonVariant: 'contained',
+      func : props.typeToHandwrittenStatusHandler
+    },
+  ];
 
   return (
     <React.Fragment>
@@ -180,15 +185,15 @@ export default function Pricing() {
                     </Typography>
                   </div>
                   <ul>
-                    {tier.description.map((line) => (
-                      <Typography component="li" variant="subtitle1" align="center" key={line}>
+                    {tier.description.map((line,index) => (
+                      <Typography component="li" variant="subtitle1" align="center" key={index}>
                         {line}
                       </Typography>
                     ))}
                   </ul>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} color="primary">
+                  <Button fullWidth variant={tier.buttonVariant} color="primary" onClick={tier.func}>
                     {tier.buttonText}
                   </Button>
                 </CardActions>
@@ -200,14 +205,14 @@ export default function Pricing() {
       {/* Footer */}
       <Container maxWidth="md" component="footer" className={classes.footer}>
         <Grid container spacing={4} justifyContent="space-evenly">
-          {footers.map((footer) => (
-            <Grid item xs={6} sm={3} key={footer.title}>
+          {footers.map((footer,index) => (
+            <Grid item xs={6} sm={3} key={index}>
               <Typography variant="h6" color="textPrimary" gutterBottom>
                 {footer.title}
               </Typography>
               <ul>
-                {footer.description.map((item) => (
-                  <li key={item}>
+                {footer.description.map((item,index) => (
+                  <li key={index}>
                     
                       {item}
                   </li>
