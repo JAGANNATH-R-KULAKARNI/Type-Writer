@@ -109,7 +109,7 @@ export default function PersistentDrawerLeft(props) {
   const Classes=UseStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [text, setText] = useState("Myself Jagannath R Kulakarni. Programmer ? Yup . And ya I can't fix your computer. Contact me on LinkedIn. And If I won't replay, then I am ignoring you.");
+  const [text, setText] = useState("Myself Jagannath R Kulakarni. Programmer ? Yup . And ya I can't fix your computer. Contact me on LinkedIn. And If I won't replay, then I am ignoring you. Copy paste your content and download it. See the settings option to change the design of page.");
   const [fontFamily, setFontFamily] = useState("'Beth Ellen', cursive")
   const [fontSize, setFontSize] = useState(19)
   const [color, setColor] = useState('red')
@@ -157,7 +157,7 @@ export default function PersistentDrawerLeft(props) {
       domtoimage.toJpeg(document.getElementById('page'), { quality: 1 })
       .then(function (dataUrl) {
           var link = document.createElement('a');
-          link.download = 'download.jpeg';
+          link.download = 'jagannathrkulakarniEditorjpeg';
           link.href = dataUrl;
           link.click();
       });

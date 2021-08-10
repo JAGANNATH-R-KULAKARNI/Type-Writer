@@ -16,6 +16,8 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import ReactHowler from 'react-howler'
+import raf from 'raf' // requestAnimationFrame polyfill
 
 function Copyright() {
   return (
@@ -28,6 +30,149 @@ function Copyright() {
       {'.'}
     </Typography>
   );
+}
+
+class MyMusic extends React.Component{
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      playing: false,
+      loaded: false,
+      loop: false,
+      mute: false,
+      volume: 0.6,
+      seek: 0.0,
+      rate: 1,
+      isSeeking: false
+    }
+    this.handleToggle = this.handleToggle.bind(this)
+    this.handleOnLoad = this.handleOnLoad.bind(this)
+    this.handleOnEnd = this.handleOnEnd.bind(this)
+    this.handleOnPlay = this.handleOnPlay.bind(this)
+    this.handleStop = this.handleStop.bind(this)
+    this.renderSeekPos = this.renderSeekPos.bind(this)
+    this.handleLoopToggle = this.handleLoopToggle.bind(this)
+    this.handleMuteToggle = this.handleMuteToggle.bind(this)
+    this.handleMouseDownSeek = this.handleMouseDownSeek.bind(this)
+    this.handleMouseUpSeek = this.handleMouseUpSeek.bind(this)
+    this.handleSeekingChange = this.handleSeekingChange.bind(this)
+    this.handleRate = this.handleRate.bind(this)
+  }
+
+  componentWillUnmount () {
+    this.clearRAF()
+  }
+
+  handleToggle () {
+    this.setState({
+      playing: !this.state.playing
+    })
+  }
+
+  handleOnLoad () {
+    this.setState({
+      loaded: true,
+      duration: this.player.duration()
+    })
+  }
+
+  handleOnPlay () {
+    this.setState({
+      playing: true
+    })
+    this.renderSeekPos()
+  }
+
+  handleOnEnd () {
+    this.setState({
+      playing: false
+    })
+    this.clearRAF()
+  }
+
+  handleStop () {
+    this.player.stop()
+    this.setState({
+      playing: false // Need to update our local state so we don't immediately invoke autoplay
+    })
+    this.renderSeekPos()
+  }
+
+  handleLoopToggle () {
+    this.setState({
+      loop: !this.state.loop
+    })
+  }
+
+  handleMuteToggle () {
+    this.setState({
+      mute: !this.state.mute
+    })
+  }
+
+  handleMouseDownSeek () {
+    this.setState({
+      isSeeking: true
+    })
+  }
+
+  handleMouseUpSeek (e) {
+    this.setState({
+      isSeeking: false
+    })
+
+    this.player.seek(e.target.value)
+  }
+
+  handleSeekingChange (e) {
+    this.setState({
+      seek: parseFloat(e.target.value)
+    })
+  }
+
+  renderSeekPos () {
+    if (!this.state.isSeeking) {
+      this.setState({
+        seek: this.player.seek()
+      })
+    }
+    if (this.state.playing) {
+      this._raf = raf(this.renderSeekPos)
+    }
+  }
+
+  handleRate (e) {
+    const rate = parseFloat(e.target.value)
+    this.player.rate(rate)
+    this.setState({ rate })
+  }
+
+  clearRAF () {
+    raf.cancel(this._raf)
+  }
+
+  render()
+  {
+    return (<div>
+ <ReactHowler
+          src='http://goldfirestudios.com/proj/howlerjs/sound.ogg'
+          playing={this.state.playing}
+          onLoad={this.handleOnLoad}
+          onPlay={this.handleOnPlay}
+          onEnd={this.handleOnEnd}
+          loop={this.state.loop}
+          mute={this.state.mute}
+          volume={this.state.volume}
+          ref={(ref) => (this.player = ref)}
+        />
+
+        <Button color={this.state.playing ? "secondary" : "primary"}  variant="outlined"  onClick={this.handleToggle}>
+        {(this.state.playing) ? 'Turn it Off' : 'Some Music ?'}
+          </Button>
+    </div>);
+  }
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -144,9 +289,8 @@ export default function Pricing(props) {
           <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
             jagannathrkulakarni.171845@gmail.com
           </Typography>
-          <Button target="_blank" href="https://www.linkedin.com/in/jagannath-r-kulakarni-a465841a7/" color="primary" variant="outlined" className={classes.link}>
-            Contact me
-          </Button>
+         
+          <MyMusic/>
         </Toolbar>
       </AppBar>
       {/* Hero unit */}
