@@ -1,6 +1,8 @@
 import React from 'react';
 import HomePageUI from './HomePageUI';
 import TypeToHand from '../TypeToHandwritten/TypeToHandWritten';
+import TextExtraction from '../TextExtraction/textExtraction';
+
 class HomePage extends React.Component
 {
 
@@ -9,9 +11,11 @@ class HomePage extends React.Component
         super();
         this.state={
             typeToHandwrittenStatus : false,
+            textExtractionStatus : false
         };
 
         this.typeToHandwrittenStatusHandler=this.typeToHandwrittenStatusHandler.bind(this);
+        this.textExtractionStatusHandler=this.textExtractionStatusHandler.bind(this);
     }
     
     typeToHandwrittenStatusHandler()
@@ -21,12 +25,20 @@ class HomePage extends React.Component
         })
     }
 
+    textExtractionStatusHandler()
+    {
+        this.setState({
+            textExtractionStatus : !this.state.textExtractionStatus
+        });
+    }
     render()
     {
         return (
             <div>
                 {this.state.typeToHandwrittenStatus ? <TypeToHand typeToHandwrittenStatusHandler={this.typeToHandwrittenStatusHandler}/>:null}
-                <HomePageUI typeToHandwrittenStatusHandler={this.typeToHandwrittenStatusHandler}/>
+                {this.state.textExtractionStatus ? <TextExtraction textExtractionStatusHandler={this.textExtractionStatusHandler}/> : null}
+                <HomePageUI typeToHandwrittenStatusHandler={this.typeToHandwrittenStatusHandler}
+                textExtractionStatusHandler={this.textExtractionStatusHandler}/>
             </div>   
         );
     }
