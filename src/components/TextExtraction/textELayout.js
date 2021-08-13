@@ -16,6 +16,10 @@ import Link from '@material-ui/core/Link';
 import {useDropzone} from 'react-dropzone';
 import { createWorker } from 'tesseract.js';
 import DBContainerUI from './DBContainer';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import Spinner from './spinner';
+import TextModalUI from './finalResultModal';
 
 function Copyright() {
   return (
@@ -31,6 +35,9 @@ function Copyright() {
 }
 
 
+function Alert(props) {
+    return <MuiAlert elevation={16} variant="filled" {...props} />;
+  }
 
 const thumbsContainer = {
   display: 'flex',
@@ -112,24 +119,48 @@ export default function Previews(props) {
   const [text, setText] = React.useState(true)
   const [scanText, setScanText] = React.useState('Scanned Text Will Appear Here. Please be patient, it might take 1-2 mins');
   const [enable,setEnable]=React.useState(false);
+  const [spinnerStatus,enableSpinner]=React.useState(false);
+  const [modalStatus,setModalStatus]=React.useState(false);
   const imageUpload = async (event) => {
     await setImage(URL.createObjectURL(event.target.files[0]));
     setEnable(true);
 }
+
+const [open, setOpen] = React.useState(false);
+const handleClick = () => {
+  setOpen(true);
+};
+
+const CloseModalStatusText=()=>{
+    setModalStatus(false);
+}
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setOpen(false);
+};
+
 const ScanText = () => {
     const worker = createWorker({
         logger: m => console.log(m)
       });
-      
+      handleClick();
+      enableSpinner(true);
       (async () => {
         await worker.load();
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
         const { data: { text } } = await worker.recognize(image);
+        handleClose();
         setScanText(text)
         setImage(null);
         setEnable(false);
         setText(true);
+        enableSpinner(false);
+        setModalStatus(true);
         console.log(text);
         await worker.terminate();
       })();
@@ -159,10 +190,35 @@ const ScanText = () => {
                             onClick={() => setText(false)}/>
       </div>
   );
+  const [Open, SetOpen] = React.useState(false);
+
+  const HandleClick = () => {
+    SetOpen(true);
+  };
+
+  const HandleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    SetOpen(false);
+  };
 
   return (
     <React.Fragment>
+        {modalStatus ? <TextModalUI CloseModalStatusText={CloseModalStatusText} scanText={scanText} HandleClick={HandleClick}/> : null}
+      <Snackbar open={open} autoHideDuration={9000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+         Extraction can take 2-3 minutes max please wait 
+        </Alert>
+      </Snackbar>
+      <Snackbar open={Open} autoHideDuration={1000} onClose={HandleClose}>
+        <Alert onClose={HandleClose} severity="success">
+         Copied To Clipboard
+        </Alert>
+      </Snackbar>
     <CssBaseline />
+    {spinnerStatus ? <Spinner/> : 
     <main>
       <div className={classes.heroContent}>
         <Container maxWidth="sm">
@@ -171,7 +227,6 @@ const ScanText = () => {
     <section className="container">
        <DBContainerUI dropbox={DROPBOX}/>
       <aside style={thumbsContainer}>
-          <p>{scanText}</p>
           <div className={classes.heroButtons}>
               <Grid container spacing={2} justifyContent="center">
                 <Grid item>
@@ -189,7 +244,7 @@ const ScanText = () => {
           </Container>
         </div>
       </main>
-
+}
     </React.Fragment>
   );
 }
