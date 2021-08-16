@@ -277,7 +277,7 @@ export default function Pricing(props) {
       ],
       buttonText: 'Get started',
       buttonVariant: 'contained',
-      func : props.typeToHandwrittenStatusHandler
+      func : props.audioToTextStatusHandler
     },
   ];
 
