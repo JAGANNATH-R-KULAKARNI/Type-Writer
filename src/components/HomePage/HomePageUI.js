@@ -18,6 +18,10 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import ReactHowler from 'react-howler'
 import raf from 'raf' // requestAnimationFrame polyfill
+import PanToolIcon from '@material-ui/icons/PanTool';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 
 function Copyright() {
   return (
@@ -249,7 +253,7 @@ export default function Pricing(props) {
     {
       title: 'Handwritten text',
       subheader: '',
-      price: '0',
+      price:   <PanToolIcon />,
       description: [
         'It converts typed text into handwritten text',
       ],
@@ -260,7 +264,7 @@ export default function Pricing(props) {
     {
       title: 'Text Extraction',
       subheader: '',
-      price: '0',
+      price: <ImageSearchIcon />,
       description: [
         'You need to upload an image and it will extract the text from it',
       ],
@@ -271,7 +275,7 @@ export default function Pricing(props) {
     {
       title: 'Voice Typer',
       subheader: '',
-      price: '0',
+      price:   <RecordVoiceOverIcon  />,
       description: [
         'speak and it will convert it into text',
       ],
@@ -301,7 +305,7 @@ export default function Pricing(props) {
         <Typography variant="h5" align="center" color="textSecondary" component="p">
             So much assignments to submit ?
             Want to extract text from image?
-            Don&apos;t want to type? no problem,this application is for you 
+            Don&apos;t want to type? want to convert voice message to text message ? no problem,this application is for you 
         </Typography>
       </Container>
       {/* End hero unit */}
@@ -322,10 +326,10 @@ export default function Pricing(props) {
                 <CardContent>
                   <div className={classes.cardPricing}>
                     <Typography component="h2" variant="h3" color="textPrimary">
-                      ${tier.price}
+                    {tier.price}
                     </Typography>
                     <Typography variant="h6" color="textSecondary">
-                      /mo
+                      <TextFieldsIcon />
                     </Typography>
                   </div>
                   <ul>

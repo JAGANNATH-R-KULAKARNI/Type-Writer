@@ -1,18 +1,18 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
+
 import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+
+
+
+
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
+
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
+
 import {useDropzone} from 'react-dropzone';
 import { createWorker } from 'tesseract.js';
 import DBContainerUI from './DBContainer';
@@ -21,18 +21,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Spinner from './spinner';
 import TextModalUI from './finalResultModal';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 
 function Alert(props) {
@@ -46,23 +35,6 @@ const thumbsContainer = {
   marginTop: 16
 };
 
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
 
 const img = {
   display: 'block',
@@ -104,17 +76,17 @@ export default function Previews(props) {
         },
       }));
       
-      const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
   const [files, setFiles] = React.useState([]);
-  const {getRootProps, getInputProps} = useDropzone({
-      maxFiles : 1,
-    accept: 'image/*',
-    onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-    }
-  });
+  const {getRootProps} = useDropzone({
+    maxFiles : 1,
+  accept: 'image/*',
+  onDrop: acceptedFiles => {
+    setFiles(acceptedFiles.map(file => Object.assign(file, {
+      preview: URL.createObjectURL(file)
+    })));
+  }
+});
   const [image, setImage] = React.useState(null);
   const [text, setText] = React.useState(true)
   const [scanText, setScanText] = React.useState('Scanned Text Will Appear Here. Please be patient, it might take 1-2 mins');
@@ -166,16 +138,6 @@ const ScanText = () => {
       })();
 }
 
-  const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img
-          src={file.preview}
-          style={img}
-        />
-      </div>
-    </div>
-  ));
   const classes = useStyles();
 
   React.useEffect(() => () => {
@@ -234,7 +196,7 @@ const ScanText = () => {
                    Extract
                   </Button>
                 </Grid>
-                <img src={image}></img>
+                <img src={image} alt="extract image"></img>
               </Grid>
             </div>
       </aside>
